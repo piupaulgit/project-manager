@@ -5,10 +5,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { register } from "./apiCalls";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,9 +47,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const classes = useStyles();
-  const [formData, setFormData] = useState({
-    formData,
+  const [formData, setFormdata] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    error: "",
   });
+  const { email, password, confirmPassword } = formData;
+  const handleChange = (name) => (event) => {
+    setFormdata({ ...formData, [name]: event.target.value });
+  };
+  const onSubmit = (event) => {
+    event.preventDefault();
+    register({ email: email, password: password })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div>
       <Grid
@@ -86,6 +100,9 @@ const Register = () => {
                   label="Email Address"
                   variant="outlined"
                   fullWidth
+                  autoComplete="off"
+                  value={email}
+                  onChange={handleChange("email")}
                 />
                 <TextField
                   className={classes.margin}
@@ -94,21 +111,8 @@ const Register = () => {
                   variant="outlined"
                   type="password"
                   fullWidth
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {values.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
+                  value={password}
+                  onChange={handleChange("password")}
                 />
                 <TextField
                   className={classes.margin}
@@ -117,6 +121,8 @@ const Register = () => {
                   variant="outlined"
                   type="password"
                   fullWidth
+                  value={confirmPassword}
+                  onChange={handleChange("confirmPassword")}
                 />
                 <Button
                   variant="contained"
@@ -124,6 +130,7 @@ const Register = () => {
                   type="submit"
                   fullWidth
                   className={classes.margin}
+                  click={onSubmit}
                 >
                   Create My Account
                 </Button>
