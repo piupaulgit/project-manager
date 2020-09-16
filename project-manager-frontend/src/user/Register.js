@@ -4,7 +4,7 @@ import sideImage from "../assets/images/register-login-img.png";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { register } from "./apiCalls";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -75,8 +75,9 @@ const Register = () => {
             error: "",
             success: `User for email id ${data.response.email} is successfully created`,
           });
+          setOpenSnackbar(true);
+          // return <Redirect to="/login"></Redirect>;
         }
-        setOpenSnackbar(true);
       })
       .catch((err) => {
         console.log(err);
