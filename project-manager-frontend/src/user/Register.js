@@ -6,7 +6,11 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
 import { register } from "./apiCalls";
-
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -47,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const classes = useStyles();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [formData, setFormdata] = useState({
     email: "",
     password: "",
@@ -64,12 +69,26 @@ const Register = () => {
         if (data.errorFlag) {
           setFormdata({ ...formData, error: data.response });
         } else {
-          setFormdata({ ...formData, error: "" });
+          setFormdata({
+            email: "",
+            password: "",
+            error: "",
+            success: `User for email id ${data.response.email} is successfully created`,
+          });
         }
+        setOpenSnackbar(true);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
   };
   return (
     <div>
@@ -140,6 +159,13 @@ const Register = () => {
         </Grid>
         {/* right section */}
       </Grid>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert severity="success">{success}</Alert>
+      </Snackbar>
     </div>
   );
 };
