@@ -50,18 +50,22 @@ const Register = () => {
   const [formData, setFormdata] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
     error: "",
+    success: "",
   });
-  const { email, password, confirmPassword } = formData;
+  const { email, password, error, success } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
   };
   const onSubmit = (event) => {
     event.preventDefault();
-    register({ email: email, password: password })
+    register({ email, password })
       .then((data) => {
-        console.log(data);
+        if (data.errorFlag) {
+          setFormdata({ ...formData, error: data.response });
+        } else {
+          setFormdata({ ...formData, error: "" });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -81,7 +85,7 @@ const Register = () => {
           <div className={classes.left}>
             <img
               src={sideImage}
-              alt="image"
+              alt="happy  man using laptop"
               className={classes.leftImage}
             ></img>
           </div>
@@ -96,33 +100,23 @@ const Register = () => {
               <form>
                 <TextField
                   className={classes.margin}
-                  id="outlined-basic"
                   label="Email Address"
                   variant="outlined"
                   fullWidth
                   autoComplete="off"
                   value={email}
+                  required
                   onChange={handleChange("email")}
                 />
                 <TextField
                   className={classes.margin}
-                  id="outlined-basic"
                   label="Password"
                   variant="outlined"
                   type="password"
                   fullWidth
                   value={password}
+                  required
                   onChange={handleChange("password")}
-                />
-                <TextField
-                  className={classes.margin}
-                  id="outlined-basic"
-                  label="Confirm Password"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  value={confirmPassword}
-                  onChange={handleChange("confirmPassword")}
                 />
                 <Button
                   variant="contained"
@@ -130,7 +124,7 @@ const Register = () => {
                   type="submit"
                   fullWidth
                   className={classes.margin}
-                  click={onSubmit}
+                  onClick={onSubmit}
                 >
                   Create My Account
                 </Button>
