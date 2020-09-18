@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import sideImage from "../assets/images/register-login-img.png";
+import sideImage from "../assets/images/login-img.png";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { login } from "./apiCalls";
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   leftImage: {
-    maxWidth: "80%",
+    maxWidth: "60%",
   },
   right: {
     height: "100%",
@@ -39,12 +46,80 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "65%",
     textAlign: "center",
   },
+  btnWrapper: {
+    position: "relative",
+  },
+  buttonProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
   margin: {
     margin: theme.spacing(1),
   },
 }));
 const Login = () => {
   const classes = useStyles();
+  const [submitBtnState, setSubmitBtnState] = useState(true);
+  const [snackbarValues, setSnackbarValues] = useState({
+    state: false,
+    message: "",
+    severity: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormdata] = useState({
+    email: "hello@123.com",
+    password: "123",
+  });
+  const handleChange = (name) => (event) => {
+    setFormdata({ ...formData, [name]: event.target.value });
+    if (formData.email === "" || formData.password === "") {
+      setSubmitBtnState(true);
+    } else {
+      setSubmitBtnState(false);
+    }
+  };
+  const onSubmit = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    login({ email, password })
+      .then((data) => {
+        setLoading(false);
+        if (data.errorFlag) {
+          setSnackbarValues({
+            state: true,
+            severity: "error",
+            message: data.response,
+          });
+        } else {
+          setFormdata({
+            email: "",
+            password: "",
+          });
+          console.log("login successs");
+          // return <Redirect to="/login"></Redirect>;
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        setSnackbarValues({
+          state: true,
+          severity: "error",
+          message: "Somethingwent wrong, Please try again",
+        });
+      });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarValues({ ...snackbarValues, state: false });
+  };
+
+  const { email, password } = formData;
   return (
     <div>
       <Grid
@@ -67,6 +142,9 @@ const Login = () => {
                   label="Email Address"
                   variant="outlined"
                   fullWidth
+                  autoComplete="off"
+                  value={email}
+                  onChange={handleChange("email")}
                 />
                 <TextField
                   className={classes.margin}
@@ -75,16 +153,27 @@ const Login = () => {
                   variant="outlined"
                   type="password"
                   fullWidth
+                  value={password}
+                  onChange={handleChange("password")}
                 />
                 <Button
+                  className={classes.btnWrapper}
                   variant="contained"
                   color="primary"
                   type="submit"
                   fullWidth
                   className={classes.margin}
+                  onClick={onSubmit}
+                  disabled={submitBtnState || loading}
                 >
-                  Create My Account
+                  Login to Your Account
                 </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
               </form>
               <p>
                 Don't have an account?{" "}
@@ -108,6 +197,15 @@ const Login = () => {
         </Grid>
         {/* right section */}
       </Grid>
+      <Snackbar
+        open={snackbarValues.state}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert severity={snackbarValues.severity}>
+          {snackbarValues.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
