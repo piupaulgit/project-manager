@@ -4,7 +4,7 @@ import sideImage from "../assets/images/login-img.png";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
+import { Link, Redirect, Route } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -98,8 +98,7 @@ const Login = () => {
             email: "",
             password: "",
           });
-          console.log("login successs");
-          // return <Redirect to="/login"></Redirect>;
+          return <Redirect to="/dashboard" />;
         }
       })
       .catch((err) => {
@@ -138,7 +137,6 @@ const Login = () => {
               <form>
                 <TextField
                   className={classes.margin}
-                  id="outlined-basic"
                   label="Email Address"
                   variant="outlined"
                   fullWidth
@@ -148,7 +146,6 @@ const Login = () => {
                 />
                 <TextField
                   className={classes.margin}
-                  id="outlined-basic"
                   label="Password"
                   variant="outlined"
                   type="password"
@@ -156,24 +153,25 @@ const Login = () => {
                   value={password}
                   onChange={handleChange("password")}
                 />
-                <Button
-                  className={classes.btnWrapper}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                  className={classes.margin}
-                  onClick={onSubmit}
-                  disabled={submitBtnState || loading}
-                >
-                  Login to Your Account
-                </Button>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )}
+                <div className={classes.btnWrapper}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    className={classes.margin}
+                    onClick={onSubmit}
+                    disabled={submitBtnState || loading}
+                  >
+                    Login to Your Account
+                  </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
               </form>
               <p>
                 Don't have an account?{" "}
@@ -190,7 +188,7 @@ const Login = () => {
           <div className={classes.left}>
             <img
               src={sideImage}
-              alt="image"
+              alt="welcome "
               className={classes.leftImage}
             ></img>
           </div>

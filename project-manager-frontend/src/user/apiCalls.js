@@ -4,7 +4,6 @@ import { API } from "../backend";
 
 // api call for register user
 export const register = (user) => {
-  console.log(`${API}/register`);
   return fetch(`${API}/register`, {
     method: "POST",
     headers: {
@@ -21,7 +20,6 @@ export const register = (user) => {
 
 // api call for login user
 export const login = (user) => {
-  console.log(`${API}/login`);
   return fetch(`${API}/login`, {
     method: "POST",
     headers: {
