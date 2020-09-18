@@ -8,6 +8,7 @@ import { Link, Redirect } from "react-router-dom";
 import { register } from "./apiCalls";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -44,6 +45,16 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "65%",
     textAlign: "center",
   },
+  btnWrapper: {
+    position: "relative",
+  },
+  buttonProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
   margin: {
     margin: theme.spacing(1),
   },
@@ -61,6 +72,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const { email, password } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
@@ -72,8 +84,10 @@ const Register = () => {
   };
   const onSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
     register({ email, password })
       .then((data) => {
+        setLoading(false);
         if (data.errorFlag) {
           // setFormdata({ ...formData, error: data.response });
           setSnackbarValues({
@@ -95,7 +109,12 @@ const Register = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setLoading(false);
+        setSnackbarValues({
+          state: true,
+          severity: "error",
+          message: "Somethingwent wrong, Please try again",
+        });
       });
   };
 
@@ -152,17 +171,25 @@ const Register = () => {
                   value={password}
                   onChange={handleChange("password")}
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                  className={classes.margin}
-                  onClick={onSubmit}
-                  disabled={submitBtnState}
-                >
-                  Create My Account
-                </Button>
+                <div className={classes.btnWrapper}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    className={classes.margin}
+                    onClick={onSubmit}
+                    disabled={submitBtnState || loading}
+                  >
+                    Create My Account
+                  </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
               </form>
               <p>
                 Already have an account?{" "}
