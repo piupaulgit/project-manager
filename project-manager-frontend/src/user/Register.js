@@ -51,14 +51,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const classes = useStyles();
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarValues, setSnackbarValues] = useState({
+    state: false,
+    message: "",
+    severity: "",
+  });
   const [formData, setFormdata] = useState({
     email: "",
     password: "",
-    error: "",
-    success: "",
   });
-  const { email, password, error, success } = formData;
+  const { email, password } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
   };
@@ -67,15 +69,22 @@ const Register = () => {
     register({ email, password })
       .then((data) => {
         if (data.errorFlag) {
-          setFormdata({ ...formData, error: data.response });
+          // setFormdata({ ...formData, error: data.response });
+          setSnackbarValues({
+            state: true,
+            severity: "error",
+            message: data.response,
+          });
         } else {
           setFormdata({
             email: "",
             password: "",
-            error: "",
-            success: `User for email id ${data.response.email} is successfully created`,
           });
-          setOpenSnackbar(true);
+          setSnackbarValues({
+            state: true,
+            severity: "success",
+            message: `User for email id ${data.response.email} is successfully created`,
+          });
           // return <Redirect to="/login"></Redirect>;
         }
       })
@@ -89,7 +98,7 @@ const Register = () => {
       return;
     }
 
-    setOpenSnackbar(false);
+    setSnackbarValues({ ...snackbarValues, state: false });
   };
   return (
     <div>
@@ -123,6 +132,7 @@ const Register = () => {
                   label="Email Address"
                   variant="outlined"
                   fullWidth
+                  type="email"
                   autoComplete="off"
                   value={email}
                   required
@@ -161,11 +171,13 @@ const Register = () => {
         {/* right section */}
       </Grid>
       <Snackbar
-        open={openSnackbar}
+        open={snackbarValues.state}
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <Alert severity="success">{success}</Alert>
+        <Alert severity={snackbarValues.severity}>
+          {snackbarValues.message}
+        </Alert>
       </Snackbar>
     </div>
   );
