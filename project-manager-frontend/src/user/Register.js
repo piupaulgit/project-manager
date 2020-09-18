@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const classes = useStyles();
+  const [submitBtnState, setSubmitBtnState] = useState(true);
   const [snackbarValues, setSnackbarValues] = useState({
     state: false,
     message: "",
@@ -63,6 +64,11 @@ const Register = () => {
   const { email, password } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
+    if (formData.email === "" || formData.password === "") {
+      setSubmitBtnState(true);
+    } else {
+      setSubmitBtnState(false);
+    }
   };
   const onSubmit = (event) => {
     event.preventDefault();
@@ -97,9 +103,9 @@ const Register = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setSnackbarValues({ ...snackbarValues, state: false });
   };
+
   return (
     <div>
       <Grid
@@ -135,7 +141,6 @@ const Register = () => {
                   type="email"
                   autoComplete="off"
                   value={email}
-                  required
                   onChange={handleChange("email")}
                 />
                 <TextField
@@ -145,7 +150,6 @@ const Register = () => {
                   type="password"
                   fullWidth
                   value={password}
-                  required
                   onChange={handleChange("password")}
                 />
                 <Button
@@ -155,6 +159,7 @@ const Register = () => {
                   fullWidth
                   className={classes.margin}
                   onClick={onSubmit}
+                  disabled={submitBtnState}
                 >
                   Create My Account
                 </Button>
