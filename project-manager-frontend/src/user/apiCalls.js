@@ -34,6 +34,23 @@ export const login = (user) => {
     .catch((err) => console.log(err));
 };
 
+// logout api
+export const logout = (next) => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("jwt");
+    next();
+    return fetch(`${API}/logout`, {
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+
 // save user to local storage
 export const authenticate = (data, next) => {
   if (typeof window !== undefined) {

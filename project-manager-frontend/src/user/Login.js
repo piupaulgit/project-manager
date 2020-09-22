@@ -119,6 +119,8 @@ const Login = () => {
   const performRedirect = () => {
     if (redirect) {
       return <Redirect to="/dashboard"></Redirect>;
+    } else {
+      // return <Redirect to="/"></Redirect>;
     }
   };
   const handleClose = (event, reason) => {
@@ -213,6 +215,7 @@ const Login = () => {
           {snackbarValues.message}
         </Alert>
       </Snackbar>
+      {performRedirect()}
     </div>
   );
 };
