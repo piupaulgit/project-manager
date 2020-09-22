@@ -1,8 +1,9 @@
-import { Dashboard } from "@material-ui/icons";
+// import { Dashboard } from "@material-ui/icons";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./user/Login";
 import Register from "./user/Register";
+import Dashboard from "./pages/Dashboard";
 
 const Routes = () => {
   return (
