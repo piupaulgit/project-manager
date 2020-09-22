@@ -8,7 +8,7 @@ import { Link, Redirect, Route } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { login } from "./apiCalls";
+import { authenticate, isAuthenticated, login } from "./apiCalls";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Login = () => {
   const classes = useStyles();
+  const { user } = isAuthenticated();
   const [submitBtnState, setSubmitBtnState] = useState(true);
   const [snackbarValues, setSnackbarValues] = useState({
     state: false,
@@ -72,7 +73,9 @@ const Login = () => {
   const [formData, setFormdata] = useState({
     email: "hello@123.com",
     password: "123",
+    redirect: false,
   });
+  const { email, password, redirect } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
     if (formData.email === "" || formData.password === "") {
@@ -94,11 +97,13 @@ const Login = () => {
             message: data.response,
           });
         } else {
-          setFormdata({
-            email: "",
-            password: "",
+          authenticate(data, () => {
+            setFormdata({
+              email: "",
+              password: "",
+              redirect: true,
+            });
           });
-          return <Redirect to="/dashboard" />;
         }
       })
       .catch((err) => {
@@ -111,6 +116,11 @@ const Login = () => {
       });
   };
 
+  const performRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/dashboard"></Redirect>;
+    }
+  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -118,7 +128,6 @@ const Login = () => {
     setSnackbarValues({ ...snackbarValues, state: false });
   };
 
-  const { email, password } = formData;
   return (
     <div>
       <Grid

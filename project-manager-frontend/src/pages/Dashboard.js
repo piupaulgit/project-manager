@@ -1,12 +1,7 @@
-import { Dashboard } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 
 const Dashboard = () => {
-  return (
-    <div>
-      <h1>Welcome, you are under the Application</h1>
-    </div>
-  );
+  return <h1>Hello</h1>;
 };
 
 export default Dashboard;
