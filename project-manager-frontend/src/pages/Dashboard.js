@@ -7,7 +7,8 @@ const Dashboard = ({ history }) => {
     <div>
       <h1>Welcome to dashboard</h1>
       <Button
-        color="primary"
+        color="secondary"
+        variant="contained"
         onClick={() => {
           logout(() => {
             history.push("/");
