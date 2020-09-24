@@ -71,9 +71,10 @@ const Register = () => {
   const [formData, setFormdata] = useState({
     email: "",
     password: "",
+    redirect: false,
   });
   const [loading, setLoading] = useState(false);
-  const { email, password } = formData;
+  const { email, password, redirect } = formData;
   const handleChange = (name) => (event) => {
     setFormdata({ ...formData, [name]: event.target.value });
     if (formData.email === "" || formData.password === "") {
@@ -89,7 +90,6 @@ const Register = () => {
       .then((data) => {
         setLoading(false);
         if (data.errorFlag) {
-          // setFormdata({ ...formData, error: data.response });
           setSnackbarValues({
             state: true,
             severity: "error",
@@ -99,6 +99,7 @@ const Register = () => {
           setFormdata({
             email: "",
             password: "",
+            redirect: true,
           });
           setSnackbarValues({
             state: true,
@@ -116,6 +117,13 @@ const Register = () => {
           message: "Somethingwent wrong, Please try again",
         });
       });
+  };
+
+  const performRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/login"></Redirect>;
+    } else {
+    }
   };
 
   const handleClose = (event, reason) => {
@@ -211,6 +219,7 @@ const Register = () => {
           {snackbarValues.message}
         </Alert>
       </Snackbar>
+      {performRedirect()}
     </div>
   );
 };
