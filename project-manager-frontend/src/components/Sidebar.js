@@ -80,8 +80,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = () => {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  const theme = useTheme();
 
   const handleDrawerOpen = () => {
     setOpen(true);
