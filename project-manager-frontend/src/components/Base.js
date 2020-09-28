@@ -89,29 +89,6 @@ export default function Base() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Sidebar></Sidebar>
       <main className={classes.content}>
         lsndkfnsadl jfgkjdlkfglkd lg dl d lsndkfnsadl jfgkjdlkfglkd lg dl d
