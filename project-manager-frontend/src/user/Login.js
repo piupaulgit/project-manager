@@ -8,7 +8,8 @@ import { Link, Redirect, Route } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { authenticate, isAuthenticated, login } from "./apiCalls";
+import { login } from "./apiCalls";
+import { authenticate, isAuthenticated } from "../helper/Authentication";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }

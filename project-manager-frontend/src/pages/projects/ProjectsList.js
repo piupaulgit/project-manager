@@ -1,7 +1,7 @@
 import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Base from '../../components/Base';
-import { isAuthenticated } from '../../user/apiCalls';
+import { isAuthenticated } from '../../helper/Authentication';
 import { getAllProjects } from './helper/projectApiCalls';
 
 const useStyles = makeStyles({
@@ -71,7 +71,7 @@ const ProjectList = () => {
                         {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    <TableCell>
+                                    <TableCell >
                                         {row.id}
                                     </TableCell>
                                      <TableCell>
