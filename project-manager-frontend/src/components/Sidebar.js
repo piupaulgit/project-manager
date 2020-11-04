@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
-        background: "#e8e8e8",
+        background: "#fff",
         color: '#000'
     },
     menuButton: {
@@ -251,7 +251,7 @@ function Sidebar(props) {
                 </Hidden>
             </nav>
             <main className={classes.content}>
-            <div className={classes.toolbar} />
+                <div className={classes.toolbar} />
                 {props.mainContent}
             </main>
         </div>
