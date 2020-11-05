@@ -158,7 +158,7 @@ function Sidebar(props) {
                             </ListItemIcon> */}
                             <ListItemText primary="Project List" />
                         </ListItem>
-                        <ListItem button className={classes.nested} component={Link} to="/add-question">
+                        <ListItem button className={classes.nested} component={Link} to="/add-project">
                             {/* <ListItemIcon>
                             <PostAddIcon style={{
                                 color: "#eeeeee",

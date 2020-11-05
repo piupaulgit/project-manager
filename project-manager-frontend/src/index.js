@@ -1,5 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css';
+import Routes from "./Routes";
+import'bootstrap/dist/js/bootstrap.bundle.min';
+import $ from'jquery';
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Routes from "./Routes";
